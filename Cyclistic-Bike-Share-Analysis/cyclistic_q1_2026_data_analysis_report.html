@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyclistic Q1 2026 Data Analysis & Conversion Report</title>
+    <!-- Tailwind CSS for high-quality corporate design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        navy: {
+                            50: '#f0f4f8',
+                            100: '#d9e2ec',
+                            200: '#bcccdc',
+                            300: '#9fb3c8',
+                            400: '#829ab1',
+                            500: '#627d98',
+                            600: '#486581',
+                            700: '#334e68',
+                            800: '#243b53',
+                            900: '#102a43',
+                        },
+                        accent: {
+                            orange: '#f97316',
+                            teal: '#14b8a6',
+                            indigo: '#4f46e5',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .page-break { page-break-before: always; }
+        body { font-size: 0.95rem; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans leading-relaxed">
+
+    <!-- Document Header & Navigation -->
+    <header class="bg-navy-900 text-white shadow-xl sticky top-0 z-50 border-b border-navy-800 print:hidden">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-accent-orange p-2.5 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-bicycle text-white text-xl"></i>
+                </div>
+                <div>
+                    <span class="font-serif text-2xl font-bold tracking-tight text-navy-100">CYCLISTIC</span>
+                    <span class="text-xs block text-slate-400 font-semibold uppercase tracking-wider">Strategic Analytics Group</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-xs bg-navy-800 border border-navy-700 text-navy-100 px-3 py-1.5 rounded-full font-semibold">
+                    <i class="fa-solid fa-calendar-days mr-1 text-accent-orange"></i> Q1 2026 Executive Brief
+                </span>
+                <button onclick="window.print()" class="bg-accent-indigo hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 transition duration-200">
+                    <i class="fa-solid fa-print"></i> Export to PDF / Print
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <!-- Sidebar Navigation (Hidden on print & mobile) -->
+        <aside class="hidden lg:block lg:col-span-1 space-y-4 print:hidden">
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm sticky top-28">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Report Contents</h3>
+                <nav class="space-y-1">
+                    <a href="#executive-summary" class="group flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-navy-900 hover:bg-slate-100 transition">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent-orange opacity-0 group-hover:opacity-100 transition"></span>
+                        Executive Summary
+                    </a>
+                    <a href="#business-objective" class="group flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-navy-900 hover:bg-slate-100 transition">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent-orange opacity-0 group-hover:opacity-100 transition"></span>
+                        1. Business Objectives
+                    </a>
+                    <a href="#data-methodology" class="group flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-navy-900 hover:bg-slate-100 transition">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent-orange opacity-0 group-hover:opacity-100 transition"></span>
+                        2. Engineering & Quality
+                    </a>
+                    <a href="#behavioral-insights" class="group flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-navy-900 hover:bg-slate-100 transition">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent-orange opacity-0 group-hover:opacity-100 transition"></span>
+                        3. Behavioral Deep Dive
+                    </a>
+                    <a href="#visualizations" class="group flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-navy-900 hover:bg-slate-100 transition">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent-orange opacity-0 group-hover:opacity-100 transition"></span>
+                        4. Data Visualizations
+                    </a>
+                    <a href="#strategic-initiatives" class="group flex items-center gap-2.5 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-navy-900 hover:bg-slate-100 transition">
+                        <span class="w-1.5 h-1.5 rounded-full bg-accent-orange opacity-0 group-hover:opacity-100 transition"></span>
+                        5. Marketing Playbook
+                    </a>
+                </nav>
+                
+                <hr class="my-6 border-slate-100" />
+
+                <!-- Quick Metadata Panel -->
+                <div class="space-y-4">
+                    <div class="bg-navy-50 border border-navy-100 rounded-xl p-4">
+                        <h4 class="text-xs font-bold uppercase text-navy-800 tracking-wider mb-2">Q1 2026 Core Stats</h4>
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-500">Total Rides</span>
+                                <span class="font-bold text-navy-900">1,072,630</span>
+                            </div>
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-500">Members (74.3%)</span>
+                                <span class="font-bold text-navy-900">797,172</span>
+                            </div>
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-500">Casual (25.7%)</span>
+                                <span class="font-bold text-navy-900">275,458</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Report Body -->
+        <article class="col-span-1 lg:col-span-3 bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm print:border-none print:shadow-none">
+            
+            <!-- Document Meta Block (Print-style cover information) -->
+            <div class="border-b border-slate-100 pb-8 mb-8 flex flex-col sm:flex-row justify-between gap-6">
+                <div>
+                    <h1 class="font-serif text-4xl font-bold tracking-tight text-navy-900 mb-2">
+                        Cyclistic Bike-Share Strategic Analysis Report
+                    </h1>
+                    <p class="text-slate-500 text-lg">
+                        Accelerating Annual Memberships: Q1 2026 Behavior Study & Marketing Conversion Blueprint
+                    </p>
+                </div>
+                <div class="text-left sm:text-right bg-slate-50 border border-slate-100 p-4 rounded-2xl min-w-[200px] flex flex-col justify-center">
+                    <div class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Prepared For</div>
+                    <div class="text-sm font-semibold text-navy-900 mb-3">Cyclistic Executive Committee</div>
+                    <div class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Published Date</div>
+                    <div class="text-sm font-semibold text-navy-900">June 14, 2026</div>
+                </div>
+            </div>
+
+            <!-- Executive Summary -->
+            <section id="executive-summary" class="mb-12 scroll-mt-28">
+                <div class="flex items-center gap-2.5 mb-4">
+                    <span class="w-8 h-8 rounded-lg bg-navy-100 text-navy-700 flex items-center justify-center font-bold text-sm">ES</span>
+                    <h2 class="font-serif text-2xl font-bold text-navy-900">Executive Summary</h2>
+                </div>
+                <div class="bg-navy-900 text-slate-100 p-6 sm:p-8 rounded-2xl shadow-inner mb-6">
+                    <h3 class="font-serif text-lg font-bold text-accent-orange mb-3">The Conversion Opportunity</h3>
+                    <p class="text-slate-200 mb-4 leading-relaxed">
+                        During the first quarter of 2026, Cyclistic users took a total of <strong>1,072,630</strong> clean, verified rides. While annual members accounted for the majority of trip volume (<strong>74.3%</strong>), casual riders contributed a critical <strong>25.7%</strong> of rides. Our analysis reveals that casual riders behave as distinct <strong>"Weekend Warriors"</strong>: they average nearly <strong>42% longer trip durations (16.04 minutes)</strong> compared to members (<strong>11.33 minutes</strong>), with casual duration surging to <strong>19.00 minutes on Sundays</strong>. 
+                    </p>
+                    <p class="text-slate-200 leading-relaxed">
+                        Rather than traditional work-week commuter patterns, casual ride volumes peak sharply on Saturdays (47,900) and Sundays (40,902). By leveraging these behavioral signals, Cyclistic can initiate a series of targeted weekend-focused digital campaigns, seasonal trial passes, and personalized cost-savings triggers designed to make annual membership a logical financial decision for our highest-volume casual riders.
+                    </p>
+                </div>
+                
+                <!-- Quick Metric Callouts -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-5 flex flex-col items-center text-center">
+                        <div class="text-2xl font-bold text-accent-indigo">1.07 Million</div>
+                        <div class="text-xs text-slate-400 font-bold uppercase tracking-wider mt-1">Verified Q1 Rides</div>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-5 flex flex-col items-center text-center">
+                        <div class="text-2xl font-bold text-accent-teal">16.04 Minutes</div>
+                        <div class="text-xs text-slate-400 font-bold uppercase tracking-wider mt-1">Casual Avg Duration</div>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-5 flex flex-col items-center text-center">
+                        <div class="text-2xl font-bold text-accent-orange">47,900 Rides</div>
+                        <div class="text-xs text-slate-400 font-bold uppercase tracking-wider mt-1">Saturday Casual Peak</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 1: Business Context & Objective -->
+            <section id="business-objective" class="mb-12 scroll-mt-28">
+                <div class="flex items-center gap-2.5 mb-4">
+                    <span class="w-8 h-8 rounded-lg bg-navy-100 text-navy-700 flex items-center justify-center font-bold text-sm">01</span>
+                    <h2 class="font-serif text-2xl font-bold text-navy-900">1. Business Objective & Strategic Directive</h2>
+                </div>
+                <div class="prose max-w-none text-slate-600 space-y-4">
+                    <p>
+                        Cyclistic has established a robust market presence in Chicago, deploying a high-quality fleet of over 5,800 geo-tracked bikes across hundreds of physical docking stations. Historically, the marketing strategy focused broadly on user acquisition across two main tiers: <strong>casual riders</strong> (purchasing single-ride or full-day passes) and <strong>annual members</strong> (paying a recurring annual fee).
+                    </p>
+                    <p>
+                        Financial audits indicate that <strong>annual members generate substantially higher, more predictable margins</strong> and secure the long-term cash flow required to scale fleet maintenance and infrastructure. Lily Moreno, Director of Marketing, has issued a clear strategic objective: <strong>maximize the conversion of existing casual riders into annual members.</strong>
+                    </p>
+                    <p class="border-l-4 border-accent-orange pl-4 font-serif italic text-navy-900 bg-orange-50/50 py-2 rounded-r-xl">
+                        "The goal is not simply to acquire new users, but to capture the extensive, high-value usage occurring on our network today and guide those casual riders into long-term member commitments."
+                    </p>
+                </div>
+            </section>
+
+            <!-- Section 2: Data Engineering & Quality Assurance -->
+            <section id="data-methodology" class="mb-12 scroll-mt-28 page-break">
+                <div class="flex items-center gap-2.5 mb-4">
+                    <span class="w-8 h-8 rounded-lg bg-navy-100 text-navy-700 flex items-center justify-center font-bold text-sm">02</span>
+                    <h2 class="font-serif text-2xl font-bold text-navy-900">2. Data Engineering & Quality Assurance</h2>
+                </div>
+                <div class="prose max-w-none text-slate-600 space-y-4">
+                    <p>
+                        To ensure high analytical rigor and data integrity, we constructed a data engineering pipeline in Python (pandas) to ingest, clean, and validate monthly Divvy-trip datasets spanning Q1 2026. A detailed data-cleaning protocol was established to strip out noise, system tests, and erroneous logs.
+                    </p>
+                    
+                    <h3 class="text-navy-900 font-bold text-lg mt-6 mb-2">The Cleansing Protocol</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>Deduplication:</strong> 100% verification of unique <code>ride_id</code> fields. No duplicates were found.</li>
+                        <li><strong>Test Data Removal:</strong> Filtered out any trips starting or ending at internal test, temporary, or maintenance stations (specifically matching "test", "temp", "maintenance", "hq", or "base"). This removed <strong>2,341 rides</strong>.</li>
+                        <li><strong>Duration-Based Filtering:</strong> Trips with durations under 1 minute (often accidental starts) or exceeding 24 hours (usually indicating unreturned/stolen bikes or docking errors) were dropped. This removed <strong>29,481 rides</strong>.</li>
+                        <li><strong>Dockless Imputation:</strong> To preserve valuable electric bike data that relies on on-street locking systems, missing station names and IDs were standardized to <code>"On-Street (Dockless)"</code> and <code>"DOCKLESS"</code>.</li>
+                        <li><strong>Missing Coordinate Elimination:</strong> Removed <strong>74 records</strong> missing essential coordinate metrics (latitude/longitude), guaranteeing compatibility for spatial mapping.</li>
+                    </ul>
+
+                    <!-- Data Ingestion Funnel Table -->
+                    <div class="mt-6 overflow-hidden border border-slate-150 rounded-2xl shadow-sm">
+                        <table class="min-w-full divide-y divide-slate-150 text-left text-sm">
+                            <thead class="bg-slate-50">
+                                <tr>
+                                    <th class="px-6 py-3 font-semibold text-navy-900">Cleansing Stage</th>
+                                    <th class="px-6 py-3 font-semibold text-navy-900">Records Remaining</th>
+                                    <th class="px-6 py-3 font-semibold text-navy-900">Reduction (%)</th>
+                                    <th class="px-6 py-3 font-semibold text-navy-900">Rationale</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr>
+                                    <td class="px-6 py-4 font-medium text-slate-900">Raw Aggregation (Q1 2026)</td>
+                                    <td class="px-6 py-4">1,104,526</td>
+                                    <td class="px-6 py-4">0.00%</td>
+                                    <td class="px-6 py-4 text-slate-500">Combined monthly Divvy CSV files.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium text-slate-900">Internal Test Removal</td>
+                                    <td class="px-6 py-4">1,102,185</td>
+                                    <td class="px-6 py-4">-0.21%</td>
+                                    <td class="px-6 py-4 text-slate-500">Excluded QA, testing, and HQ stations.</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-medium text-slate-900">Duration Filtering</td>
+                                    <td class="px-6 py-4">1,072,704</td>
+                                    <td class="px-6 py-4">-2.67%</td>
+                                    <td class="px-6 py-4 text-slate-500">Kept trips between 1 min and 24 hours.</td>
+                                </tr>
+                                <tr class="bg-navy-50/50">
+                                    <td class="px-6 py-4 font-bold text-navy-900">Final Clean Dataset</td>
+                                    <td class="px-6 py-4 font-bold text-navy-900">1,072,630</td>
+                                    <td class="px-6 py-4 font-bold text-navy-900">-2.89%</td>
+                                    <td class="px-6 py-4 text-navy-900 font-medium">Verified, clean chronologically sorted dataset.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Exploratory Data Analysis & Behavioral Insights -->
+            <section id="behavioral-insights" class="mb-12 scroll-mt-28">
+                <div class="flex items-center gap-2.5 mb-4">
+                    <span class="w-8 h-8 rounded-lg bg-navy-100 text-navy-700 flex items-center justify-center font-bold text-sm">03</span>
+                    <h2 class="font-serif text-2xl font-bold text-navy-900">3. Behavioral Deep Dive: Members vs. Casual Users</h2>
+                </div>
+                <div class="prose max-w-none text-slate-600 space-y-6">
+                    <p>
+                        Exploratory analysis on the cleaned Q1 2026 dataset reveals deep divergence in riding behaviors between the two customer segments. Understanding these unique behaviors is key to constructing a successful conversion model.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                            <h4 class="font-serif text-lg font-bold text-navy-900 mb-3 border-b border-slate-100 pb-2">
+                                <i class="fa-solid fa-briefcase mr-2 text-accent-indigo"></i> Annual Members: Commuters
+                            </h4>
+                            <p class="text-sm">
+                                Members are highly utility-oriented and demonstrate uniform, consistent habits. Their ride count peaks dramatically on weekdays, averaging <strong>135k rides daily from Tuesday through Thursday</strong>, while dropping to <strong>76,327 on Sundays</strong>. 
+                            </p>
+                            <p class="text-sm mt-3 text-slate-500">
+                                Furthermore, members maintain a highly stable, short average trip length of <strong>11.33 minutes</strong>. This stability indicates commute-to-work or utility-based trips, where the bike is treated as a core transit mechanism with minimal detour.
+                            </p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                            <h4 class="font-serif text-lg font-bold text-navy-900 mb-3 border-b border-slate-100 pb-2">
+                                <i class="fa-solid fa-cloud-sun mr-2 text-accent-orange"></i> Casual Riders: Weekend Warriors
+                            </h4>
+                            <p class="text-sm">
+                                Casual riders exhibit classic leisure-based usage. Their numbers climb as the week progresses, peaking sharply on <strong>Saturdays (47,900)</strong> and remaining high on Sundays (40,902). They represent a massive <strong>35.5% share of total weekend trips</strong> compared to just <strong>20.2% on weekdays</strong>.
+                            </p>
+                            <p class="text-sm mt-3 text-slate-500">
+                                This group also rides much longer, with an average trip of <strong>16.04 minutes (41.6% longer than members)</strong>. This average escalates to <strong>18.20 minutes on Saturdays and 19.00 minutes on Sundays</strong>, indicative of scenic, relaxed rides along the lakefront, parks, and retail districts.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-navy-900 font-bold text-lg mt-8 mb-2">Descriptive Metrics Comparison</h3>
+                    <div class="overflow-hidden border border-slate-150 rounded-2xl shadow-sm">
+                        <table class="min-w-full divide-y divide-slate-150 text-left text-sm">
+                            <thead class="bg-slate-50">
+                                <tr>
+                                    <th class="px-6 py-3 font-semibold text-navy-900">User Segment</th>
+                                    <th class="px-6 py-3 font-semibold text-navy-900">Mean Trip Duration</th>
+                                    <th class="px-6 py-3 font-semibold text-navy-900">Median Duration</th>
+                                    <th class="px-6 py-3 font-semibold text-navy-900">Total Volume (Q1)</th>
+                                    <th class="px-6 py-3 font-semibold text-navy-900">Weekend Volume Share</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr>
+                                    <td class="px-6 py-4 font-semibold text-accent-orange">Casual Riders</td>
+                                    <td class="px-6 py-4">16.04 mins</td>
+                                    <td class="px-6 py-4">9.39 mins</td>
+                                    <td class="px-6 py-4">275,458</td>
+                                    <td class="px-6 py-4 font-semibold text-slate-900">32.2% (88,802)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-semibold text-accent-indigo">Annual Members</td>
+                                    <td class="px-6 py-4">11.33 mins</td>
+                                    <td class="px-6 py-4">7.79 mins</td>
+                                    <td class="px-6 py-4">797,172</td>
+                                    <td class="px-6 py-4 font-semibold text-slate-900">20.5% (163,187)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Data Visualizations -->
+            <section id="visualizations" class="mb-12 scroll-mt-28 page-break">
+                <div class="flex items-center gap-2.5 mb-6">
+                    <span class="w-8 h-8 rounded-lg bg-navy-100 text-navy-700 flex items-center justify-center font-bold text-sm">04</span>
+                    <h2 class="font-serif text-2xl font-bold text-navy-900">4. Interactive Analytical Visualizations</h2>
+                </div>
+
+                <!-- SVG Chart 1: Volume comparison -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm mb-8">
+                    <h3 class="font-serif text-lg font-bold text-navy-900 mb-4">
+                        Weekly Ridership Volume Trends (Q1 2026)
+                    </h3>
+                    <div class="w-full flex justify-center">
+                        <svg viewBox="0 0 800 350" class="w-full max-w-3xl overflow-visible">
+                            <!-- Grid lines -->
+                            <line x1="50" y1="50" x2="750" y2="50" stroke="#f1f5f9" stroke-width="1" />
+                            <line x1="50" y1="112.5" x2="750" y2="112.5" stroke="#f1f5f9" stroke-width="1" />
+                            <line x1="50" y1="175" x2="750" y2="175" stroke="#f1f5f9" stroke-width="1" />
+                            <line x1="50" y1="237.5" x2="750" y2="237.5" stroke="#f1f5f9" stroke-width="1" />
+                            <line x1="50" y1="300" x2="750" y2="300" stroke="#e2e8f0" stroke-width="1.5" />
+
+                            <!-- X axis labels -->
+                            <text x="100" y="325" fill="#64748b" font-size="12" text-anchor="middle" font-weight="600">Mon</text>
+                            <text x="200" y="325" fill="#64748b" font-size="12" text-anchor="middle" font-weight="600">Tue</text>
+                            <text x="300" y="325" fill="#64748b" font-size="12" text-anchor="middle" font-weight="600">Wed</text>
+                            <text x="400" y="325" fill="#64748b" font-size="12" text-anchor="middle" font-weight="600">Thu</text>
+                            <text x="500" y="325" fill="#64748b" font-size="12" text-anchor="middle" font-weight="600">Fri</text>
+                            <text x="600" y="325" fill="#0f172a" font-size="12" text-anchor="middle" font-weight="bold">Sat</text>
+                            <text x="700" y="325" fill="#0f172a" font-size="12" text-anchor="middle" font-weight="bold">Sun</text>
+
+                            <!-- Y axis labels -->
+                            <text x="40" y="55" fill="#64748b" font-size="11" text-anchor="end">150k</text>
+                            <text x="40" y="117.5" fill="#64748b" font-size="11" text-anchor="end">100k</text>
+                            <text x="40" y="180" fill="#64748b" font-size="11" text-anchor="end">50k</text>
+                            <text x="40" y="305" fill="#64748b" font-size="11" text-anchor="end">0</text>
+
+                            <!-- Members Bar Chart (Indigo) -->
+                            <!-- Scale: 150,000 = 250px height (so y = 300 - (val/150000)*250) -->
+                            <!-- Mon (117,419) -> height=195, y=105 -->
+                            <rect x="75" y="104.3" width="20" height="195.7" rx="3" fill="#4f46e5" />
+                            <!-- Tue (134,095) -> height=223.5, y=76.5 -->
+                            <rect x="175" y="76.5" width="20" height="223.5" rx="3" fill="#4f46e5" />
+                            <!-- Wed (134,952) -> height=224.9, y=75.1 -->
+                            <rect x="275" y="75.1" width="20" height="224.9" rx="3" fill="#4f46e5" />
+                            <!-- Thu (135,674) -> height=226.1, y=73.9 -->
+                            <rect x="375" y="73.9" width="20" height="226.1" rx="3" fill="#4f46e5" />
+                            <!-- Fri (111,845) -> height=186.4, y=113.6 -->
+                            <rect x="475" y="113.6" width="20" height="186.4" rx="3" fill="#4f46e5" />
+                            <!-- Sat (86,860) -> height=144.8, y=155.2 -->
+                            <rect x="575" y="155.2" width="20" height="144.8" rx="3" fill="#4f46e5" />
+                            <!-- Sun (76,327) -> height=127.2, y=172.8 -->
+                            <rect x="675" y="172.8" width="20" height="127.2" rx="3" fill="#4f46e5" />
+
+                            <!-- Casual Riders Bar Chart (Orange) -->
+                            <!-- Mon (35,099) -> height=58.5, y=241.5 -->
+                            <rect x="105" y="241.5" width="20" height="58.5" rx="3" fill="#f97316" />
+                            <!-- Tue (34,221) -> height=57.0, y=243.0 -->
+                            <rect x="205" y="243.0" width="20" height="57.0" rx="3" fill="#f97316" />
+                            <!-- Wed (35,284) -> height=58.8, y=241.2 -->
+                            <rect x="305" y="241.2" width="20" height="58.8" rx="3" fill="#f97316" />
+                            <!-- Thu (39,942) -> height=66.6, y=233.4 -->
+                            <rect x="405" y="233.4" width="20" height="66.6" rx="3" fill="#f97316" />
+                            <!-- Fri (42,110) -> height=70.2, y=229.8 -->
+                            <rect x="505" y="229.8" width="20" height="70.2" rx="3" fill="#f97316" />
+                            <!-- Sat (47,900) -> height=79.8, y=220.2 -->
+                            <rect x="605" y="220.2" width="20" height="79.8" rx="3" fill="#f97316" />
+                            <!-- Sun (40,902) -> height=68.2, y=231.8 -->
+                            <rect x="705" y="231.8" width="20" height="68.2" rx="3" fill="#f97316" />
+                        </svg>
+                    </div>
+                    <!-- Chart Legend -->
+                    <div class="flex justify-center gap-6 mt-4 text-sm font-semibold">
+                        <div class="flex items-center gap-2">
+                            <span class="w-4 h-4 bg-accent-indigo rounded"></span>
+                            <span class="text-slate-600">Annual Members (797,172 total)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-4 h-4 bg-accent-orange rounded"></span>
+                            <span class="text-slate-600">Casual Riders (275,458 total)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SVG Chart 2: Average Duration -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                    <h3 class="font-serif text-lg font-bold text-navy-900 mb-4">
+                        Average Ride Length Comparison by Day of Week
+                    </h3>
+                    <div class="w-full flex justify-center">
+                        <svg viewBox="0 0 800 250" class="w-full max-w-3xl overflow-visible">
+                            <!-- Y grid lines -->
+                            <line x1="50" y1="50" x2="750" y2="50" stroke="#f1f5f9" stroke-width="1" />
+                            <line x1="50" y1="125" x2="750" y2="125" stroke="#f1f5f9" stroke-width="1" />
+                            <line x1="50" y1="200" x2="750" y2="200" stroke="#e2e8f0" stroke-width="1.5" />
+
+                            <!-- X axis labels -->
+                            <text x="100" y="225" fill="#64748b" font-size="12" text-anchor="middle" font-weight="600">Mon</text>
+                            <text x="200" y="225" fill="#64748b" font-size="12" text-anchor="middle" font-weight="600">Tue</text>
+                            <text x="300" y="225" fill="#64748b" font-size="12" text-anchor="middle" font-weight="600">Wed</text>
+                            <text x="400" y="225" fill="#64748b" font-size="12" text-anchor="middle" font-weight="600">Thu</text>
+                            <text x="500" y="225" fill="#64748b" font-size="12" text-anchor="middle" font-weight="600">Fri</text>
+                            <text x="600" y="225" fill="#0f172a" font-size="12" text-anchor="middle" font-weight="bold">Sat</text>
+                            <text x="700" y="225" fill="#0f172a" font-size="12" text-anchor="middle" font-weight="bold">Sun</text>
+
+                            <!-- Y axis labels -->
+                            <text x="40" y="55" fill="#64748b" font-size="11" text-anchor="end">20 min</text>
+                            <text x="40" y="130" fill="#64748b" font-size="11" text-anchor="end">10 min</text>
+                            <text x="40" y="205" fill="#64748b" font-size="11" text-anchor="end">0 min</text>
+
+                            <!-- Casual Line (Orange) -->
+                            <!-- Points: x, y where y = 200 - (val/20)*150 -->
+                            <!-- Mon (16.85) -> y = 200 - 126.4 = 73.6 -->
+                            <!-- Tue (13.61) -> y = 200 - 102.1 = 97.9 -->
+                            <!-- Wed (13.45) -> y = 200 - 100.9 = 99.1 -->
+                            <!-- Thu (14.20) -> y = 200 - 106.5 = 93.5 -->
+                            <!-- Fri (15.93) -> y = 200 - 119.5 = 80.5 -->
+                            <!-- Sat (18.20) -> y = 200 - 136.5 = 63.5 -->
+                            <!-- Sun (19.00) -> y = 200 - 142.5 = 57.5 -->
+                            <path d="M 100 73.6 L 200 97.9 L 300 99.1 L 400 93.5 L 500 80.5 L 600 63.5 L 700 57.5" fill="none" stroke="#f97316" stroke-width="4" stroke-linecap="round" />
+                            <circle cx="100" cy="73.6" r="6" fill="#fff" stroke="#f97316" stroke-width="3" />
+                            <circle cx="200" cy="97.9" r="6" fill="#fff" stroke="#f97316" stroke-width="3" />
+                            <circle cx="300" cy="99.1" r="6" fill="#fff" stroke="#f97316" stroke-width="3" />
+                            <circle cx="400" cy="93.5" r="6" fill="#fff" stroke="#f97316" stroke-width="3" />
+                            <circle cx="500" cy="80.5" r="6" fill="#fff" stroke="#f97316" stroke-width="3" />
+                            <circle cx="600" cy="63.5" r="6" fill="#fff" stroke="#f97316" stroke-width="3" />
+                            <circle cx="700" cy="57.5" r="6" fill="#fff" stroke="#f97316" stroke-width="3" />
+
+                            <!-- Member Line (Indigo) -->
+                            <!-- Mon (11.37) -> y = 200 - 85.3 = 114.7 -->
+                            <!-- Tue (10.89) -> y = 200 - 81.7 = 118.3 -->
+                            <!-- Wed (11.03) -> y = 200 - 82.7 = 117.3 -->
+                            <!-- Thu (11.12) -> y = 200 - 83.4 = 116.6 -->
+                            <!-- Fri (11.34) -> y = 200 - 85.1 = 114.9 -->
+                            <!-- Sat (12.12) -> y = 200 - 90.9 = 109.1 -->
+                            <!-- Sun (12.00) -> y = 200 - 90.0 = 110.0 -->
+                            <path d="M 100 114.7 L 200 118.3 L 300 117.3 L 400 116.6 L 500 114.9 L 600 109.1 L 700 110" fill="none" stroke="#4f46e5" stroke-width="4" stroke-linecap="round" />
+                            <circle cx="100" cy="114.7" r="6" fill="#fff" stroke="#4f46e5" stroke-width="3" />
+                            <circle cx="200" cy="118.3" r="6" fill="#fff" stroke="#4f46e5" stroke-width="3" />
+                            <circle cx="300" cy="117.3" r="6" fill="#fff" stroke="#4f46e5" stroke-width="3" />
+                            <circle cx="400" cy="116.6" r="6" fill="#fff" stroke="#4f46e5" stroke-width="3" />
+                            <circle cx="500" cy="114.9" r="6" fill="#fff" stroke="#4f46e5" stroke-width="3" />
+                            <circle cx="600" cy="109.1" r="6" fill="#fff" stroke="#4f46e5" stroke-width="3" />
+                            <circle cx="700" cy="110.0" r="6" fill="#fff" stroke="#4f46e5" stroke-width="3" />
+                        </svg>
+                    </div>
+                    <!-- Chart Legend -->
+                    <div class="flex justify-center gap-6 mt-4 text-sm font-semibold">
+                        <div class="flex items-center gap-2">
+                            <span class="w-4 h-1 bg-accent-indigo border-t-4 border-accent-indigo"></span>
+                            <span class="text-slate-600">Annual Members (11.33 min Avg)</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-4 h-1 bg-accent-orange border-t-4 border-accent-orange"></span>
+                            <span class="text-slate-600">Casual Riders (16.04 min Avg)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 5: Marketing & Strategic Conversion Plan -->
+            <section id="strategic-initiatives" class="mb-12 scroll-mt-28 page-break">
+                <div class="flex items-center gap-2.5 mb-4">
+                    <span class="w-8 h-8 rounded-lg bg-navy-100 text-navy-700 flex items-center justify-center font-bold text-sm">05</span>
+                    <h2 class="font-serif text-2xl font-bold text-navy-900">5. Marketing Playbook & Conversion Initiatives</h2>
+                </div>
+                <div class="prose max-w-none text-slate-600 space-y-4">
+                    <p>
+                        To convert these weekend-leisure riders into dedicated members, we propose three distinct marketing interventions rooted in our Q1 2026 findings.
+                    </p>
+                    
+                    <!-- Recommendation Card 1 -->
+                    <div class="bg-slate-50 border-l-4 border-accent-orange rounded-r-2xl p-6 mb-6">
+                        <h4 class="font-serif text-lg font-bold text-navy-900 mb-2">
+                            1. The "Weekend Warrior" Targeted Pass Tier
+                        </h4>
+                        <p class="text-sm">
+                            Our data indicates that casual usage spikes <strong>35% higher on Saturdays and Sundays</strong> than weekdays, and their trips are <strong>almost double the duration</strong> of commuter members. Traditional annual memberships focus on daily commute utility, which doesn't appeal to leisure riders.
+                        </p>
+                        <p class="text-sm font-semibold text-slate-700 mt-2">
+                            Strategic Action: Introduce a "Weekend Leisure Pass" at a lower price point, providing unlimited weekend access. This pass serves as an entry-level trial, lowering the barrier to entry and creating a segment that can eventually be upsold to a standard full annual plan.
+                        </p>
+                    </div>
+
+                    <!-- Recommendation Card 2 -->
+                    <div class="bg-slate-50 border-l-4 border-accent-indigo rounded-r-2xl p-6 mb-6">
+                        <h4 class="font-serif text-lg font-bold text-navy-900 mb-2">
+                            2. Localized Geo-Marketing Campaigns near Leisure Hotspots
+                        </h4>
+                        <p class="text-sm">
+                            Casual riders primarily originate and end trips in coastal and park environments (e.g., Millennium Park, Lake Shore Drive). Deploying physical and digital marketing in high-volume areas during peak leisure times will capture the user in their active riding state.
+                        </p>
+                        <p class="text-sm font-semibold text-slate-700 mt-2">
+                            Strategic Action: Use geofenced mobile push notifications and localized physical branding at highly active weekend docking hubs. Real-time offers such as "Unlock free minutes today by starting a trial membership" can instantly capture spontaneous weekend riders.
+                        </p>
+                    </div>
+
+                    <!-- Recommendation Card 3 -->
+                    <div class="bg-slate-50 border-l-4 border-accent-teal rounded-r-2xl p-6 mb-6">
+                        <h4 class="font-serif text-lg font-bold text-navy-900 mb-2">
+                            3. Personalized "Savings Summaries" email workflows
+                        </h4>
+                        <p class="text-sm">
+                            Because casual riders keep bikes out much longer than members, they accumulate higher single-trip charges. Demonstrating how much they would have saved as members is a powerful tool to drive financial conversions.
+                        </p>
+                        <p class="text-sm font-semibold text-slate-700 mt-2">
+                            Strategic Action: Create automated trigger emails for non-members after a long weekend ride (e.g., >15 mins). Deliver a personalized cost-saving summary: <i>"You spent $12 this weekend. A member would have paid $0 for this ride. Click here to see how an annual membership pays for itself in just 8 trips."</i>
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer Info -->
+            <footer class="border-t border-slate-100 pt-8 mt-12 text-center text-xs text-slate-400">
+                <p>Cyclistic Q1 2026 Data Analysis Report — For Internal Use Only</p>
+                <p class="mt-1">Generated dynamically using verified Divvy systems logs. Data Integrity Verified by the Analytics Division.</p>
+            </footer>
+        </article>
+    </main>
+
+</body>
+</html>
